@@ -12,6 +12,7 @@
     --bg: #f5f1e8;
     --card: #ffffff;
     --accent: #e8743b;
+    --accent-light: #f2cc8f;
     --text: #3a3a3a;
     --sub: #8a8a8a;
     --border: #ece4d8;
@@ -248,6 +249,168 @@
   }
   .modal-content li { margin-bottom: 4px; }
   .tip-list li { color: #6a6a6a; }
+
+  /* レシピ集タブ */
+  .recipe-controls {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+    margin-bottom: 12px;
+  }
+  .recipe-controls input, .recipe-controls select {
+    padding: 12px 14px;
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    font-size: 1rem;
+    background: var(--card);
+    color: var(--text);
+    width: 100%;
+  }
+  .recipe-controls input { flex: 2 1 200px; }
+  .recipe-controls select { flex: 1 1 140px; }
+  .recipe-count {
+    text-align: center;
+    color: var(--sub);
+    font-size: 0.85rem;
+    margin-bottom: 12px;
+  }
+  .recipe-grid {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+  .recipe-card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    padding: 14px 16px;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+  }
+  .recipe-card-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 8px;
+    cursor: pointer;
+    -webkit-tap-highlight-color: transparent;
+  }
+  .recipe-card-number {
+    font-size: 0.75rem;
+    color: var(--sub);
+    background: var(--bg);
+    border-radius: 6px;
+    padding: 2px 8px;
+    flex-shrink: 0;
+    margin-top: 2px;
+  }
+  .recipe-card-title {
+    font-size: 1.1rem;
+    font-weight: 700;
+    color: var(--text);
+    line-height: 1.4;
+    flex: 1;
+  }
+  .recipe-toggle-icon {
+    font-size: 1.2rem;
+    color: var(--sub);
+    flex-shrink: 0;
+    transition: transform 0.2s ease;
+    user-select: none;
+  }
+  .recipe-card.open .recipe-toggle-icon {
+    transform: rotate(180deg);
+  }
+  .recipe-meta {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 0.85rem;
+    color: var(--sub);
+    margin-top: 8px;
+  }
+  .recipe-stars {
+    color: var(--accent-light);
+    letter-spacing: 1px;
+    font-size: 1rem;
+  }
+  .recipe-stars .filled { color: var(--accent); }
+  .recipe-time-badge {
+    background: var(--bg);
+    color: var(--text);
+    border-radius: 999px;
+    padding: 3px 12px;
+    font-size: 0.8rem;
+    white-space: nowrap;
+  }
+  .recipe-time-badge.unknown {
+    color: var(--sub);
+    border: 1px dashed var(--border);
+    background: transparent;
+  }
+  .recipe-ingredients-preview {
+    font-size: 0.8rem;
+    color: var(--sub);
+    line-height: 1.5;
+    margin-top: 6px;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+  .recipe-saved-date {
+    font-size: 0.75rem;
+    color: var(--sub);
+    text-align: right;
+    margin-top: 4px;
+  }
+  .recipe-detail {
+    display: none;
+    margin-top: 12px;
+    padding-top: 12px;
+    border-top: 1px solid var(--border);
+    font-size: 0.9rem;
+    line-height: 1.7;
+  }
+  .recipe-card.open .recipe-detail {
+    display: block;
+  }
+  .recipe-detail h4 {
+    font-size: 0.85rem;
+    color: var(--accent);
+    margin: 14px 0 6px;
+  }
+  .recipe-detail h4:first-child {
+    margin-top: 0;
+  }
+  .recipe-detail .group-label {
+    font-size: 0.8rem;
+    font-weight: 700;
+    color: var(--text);
+    margin: 8px 0 2px;
+  }
+  .recipe-detail ul, .recipe-detail ol {
+    margin: 0;
+    padding-left: 1.4em;
+  }
+  .recipe-detail li {
+    margin-bottom: 2px;
+  }
+  .recipe-detail .source {
+    margin-top: 14px;
+    font-size: 0.8rem;
+    color: var(--sub);
+  }
+  .recipe-detail .source a {
+    color: var(--accent);
+    text-decoration: none;
+    word-break: break-all;
+  }
+  .recipe-empty-msg {
+    text-align: center;
+    color: var(--sub);
+    margin-top: 40px;
+    display: none;
+  }
 </style>
 </head>
 <body>
@@ -259,6 +422,7 @@
 <div class="tabs">
   <div class="tab active" data-target="menu">献立</div>
   <div class="tab" data-target="shopping">買い物リスト</div>
+  <div class="tab" data-target="recipes">レシピ集</div>
 </div>
 
 <main>
@@ -361,6 +525,22 @@
     </div>
 
     <button class="reset-btn" id="resetBtn">チェックをすべてリセット</button>
+  </section>
+
+  <!-- レシピ集ページ -->
+  <section id="recipes" class="page">
+    <div class="recipe-controls">
+      <input type="text" id="recipeSearch" placeholder="料理名・食材で検索...">
+      <select id="recipeDifficultyFilter">
+        <option value="">難易度: すべて</option>
+        <option value="1">★☆☆(かんたん)</option>
+        <option value="2">★★☆(ふつう)</option>
+        <option value="3">★★★(むずかしい)</option>
+      </select>
+    </div>
+    <div class="recipe-count" id="recipeCount"></div>
+    <div class="recipe-grid" id="recipeGrid"></div>
+    <div class="recipe-empty-msg" id="recipeEmptyMsg">該当するレシピがありません</div>
   </section>
 </main>
 
@@ -533,6 +713,389 @@
       ]
     }
   };
+
+  // レシピ集データ: レシピメモ取り込み時はこの配列に新しいレシピを追加する
+  const recipeList = [
+    {
+      id: 1,
+      name: "チキン南蛮",
+      time: "約15分",
+      timeUnknown: false,
+      difficulty: 1,
+      savedDate: "2026-06-14",
+      source: { text: "@mai.10gohan (Instagram)", url: "https://www.instagram.com/p/DJjO7iRxSOA/" },
+      ingredientGroups: [
+        { label: "鶏肉・タレ", items: ["鶏もも肉：1枚", "料理酒：大さじ2", "醤油：大さじ2", "砂糖：大さじ2", "お酢：大さじ2"] },
+        { label: "タルタルソース", items: ["卵：2個", "マヨネーズ：大さじ2", "塩コショウ：少々"] }
+      ],
+      steps: [
+        "鍋に鶏もも肉の皮目を下にして○（タレ）を入れ、蓋をして中火で5分ほど煮る",
+        "肉を煮る間に卵を割り黄身に穴を開け、ラップをかけて600Wで1分30秒レンチン",
+        "卵をほぐしてマヨネーズと塩コショウを混ぜる",
+        "5分たったら肉を裏返して、弱めの中火で3分程煮る",
+        "蓋を開けて再度裏返し、火を強めてとろみがついたら火を止める"
+      ],
+      tips: [
+        "タルタルソースはレンチン卵で簡単に作れる時短アレンジ",
+        "とろみがつくまでしっかり煮詰めるのがポイント",
+        "黄身に穴を開けないとレンチン中に破裂するので注意"
+      ]
+    },
+    {
+      id: 2,
+      name: "油揚げの肉詰め",
+      time: "",
+      timeUnknown: true,
+      difficulty: 1,
+      savedDate: "2026-06-14",
+      source: null,
+      ingredientGroups: [
+        { label: "肉だね", items: ["油揚げ：2枚", "豚ひき肉：200g", "ニラ：1/4束（ニオイが気になるなら小松菜でもOK）", "おろし生姜：少々", "塩：少々", "胡椒：少々", "ごま：大さじ1（食感のアクセントになるので必須！）"] },
+        { label: "蒸し焼き用", items: ["酒：大さじ1"] },
+        { label: "付けダレ", items: ["酢、醤油、カラシ、ポン酢など：適量（餃子の付けダレと同じ感覚で）"] }
+      ],
+      steps: [
+        "油揚げは2等分し、ニラは粗みじんに切り、生姜はおろす",
+        "○（肉だねの材料）をフライパンで白っぽくなるまでよくこねる",
+        "油揚げに2を詰めて1cm程度の厚さにする（おいなりさん型にすると火が通りにくいので注意）",
+        "蓋を閉めて弱めの中火で焼き、こんがりしたらひっくり返して酒を入れ、中まで火が通るように蒸し焼きにする",
+        "付けダレをつけて食べる"
+      ],
+      tips: [
+        "ごまは食感のアクセントになるので忘れずに",
+        "ニラが苦手なら小松菜で代替可",
+        "おいなりさん型（袋状）にすると火が通りにくいため、平らに詰めるのがポイント",
+        "付けダレは餃子用のものと同じでOK（酢＋醤油＋カラシ、またはポン酢など）"
+      ]
+    },
+    {
+      id: 3,
+      name: "具沢山のふわっふわ焼き",
+      time: "",
+      timeUnknown: true,
+      difficulty: 1,
+      savedDate: "2026-06-14",
+      source: null,
+      ingredientGroups: [
+        { label: null, items: ["鶏挽肉：250g", "はんぺん：1枚（50g）", "サラダスティック（カニ風味かまぼこ）：5本", "粉チーズ：大さじ1", "ごま：大さじ1", "ねぎ（青いところ）：1本分（10g）", "醤油：大さじ1/2", "油：大さじ1/2", "お酒：大さじ1"] }
+      ],
+      steps: [
+        "ねぎは小口切り、サラダスティックはほぐして○（油・お酒以外の材料）をよく揉む",
+        "4等分して小判型にまとめる",
+        "油を回し入れて弱火で焼き、焼き目がついたらひっくり返してお酒を入れて蒸し焼きにする",
+        "中まで火が通ったら完成！"
+      ],
+      tips: [
+        "はんぺんを入れることでふわっとした食感になる",
+        "弱火でじっくり焼くのがポイント",
+        "蒸し焼きにすることで中までしっかり火が通る"
+      ]
+    },
+    {
+      id: 4,
+      name: "ピーマンの肉詰め（絶対に剥がれない）",
+      time: "",
+      timeUnknown: true,
+      difficulty: 1,
+      savedDate: "2026-06-14",
+      source: { text: "@pecopeco_kanchan (Instagram)", url: "https://www.instagram.com/pecopeco_kanchan/" },
+      ingredientGroups: [
+        { label: "メイン", items: ["ピーマン：4つ", "合挽き肉（豚ひき肉でも可）：200〜250g", "玉ねぎ：1/2個"] },
+        { label: "ピーマンにまぶす用", items: ["片栗粉：大さじ1"] },
+        { label: "肉だね用 ●", items: ["片栗粉：大さじ1", "塩胡椒：少々"] },
+        { label: "蒸し焼き用", items: ["酒：大さじ1"] },
+        { label: "タレ ◎", items: ["醤油：大さじ1", "みりん：大さじ1", "砂糖：小さじ2"] }
+      ],
+      steps: [
+        "ピーマンのヘタと種を取って2〜3cm幅の輪切りにする",
+        "ポリ袋に輪切りにしたピーマンと片栗粉大さじ1を入れ、全体にまぶすようにシャカシャカ振る",
+        "ボールに合挽き肉（豚ひき肉でも可）とみじん切りにした玉ねぎ、●（片栗粉・塩胡椒）を入れてよく揉む",
+        "肉だねができたら、ピーマンに詰めていく",
+        "油をあたためたフライパンにピーマンの肉詰めを並べて焼く",
+        "片面焼けたら裏っ返し、酒を大さじ1入れて蓋をし、蒸し焼きにする",
+        "火が通った頃で◎の調味料を全て加え、中火で熱しながらピーマンと絡め、テリテリになったら完成"
+      ],
+      tips: [
+        "ピーマンに片栗粉をまぶしておくことで肉だねが剥がれにくくなる",
+        "肉だねに片栗粉を入れることでふっくら仕上がる",
+        "蒸し焼き後にタレを絡めてテリテリに仕上げるのがポイント"
+      ]
+    },
+    {
+      id: 5,
+      name: "牛肉入りきんぴらごぼう",
+      time: "",
+      timeUnknown: true,
+      difficulty: 1,
+      savedDate: "2026-06-14",
+      source: { text: "@saki.cooking (Instagram)", url: "https://www.instagram.com/saki.cooking/" },
+      ingredientGroups: [
+        { label: null, items: ["ごぼう：1本", "にんじん：1/2本", "牛こま肉：200g", "醤油：フライパン1周", "酒：フライパン1周", "みりん：フライパン1周", "砂糖：大さじ1くらい", "一味唐辛子：少々", "ごま油：仕上げに少々"] }
+      ],
+      steps: [
+        "ごぼう、にんじんを炒める",
+        "牛肉を加えて炒める",
+        "調味料（醤油・酒・みりん・砂糖・一味）を全て入れて汁気がなくなったらOK",
+        "仕上げにごま油をかけて完成"
+      ],
+      tips: [
+        "分量はアバウトでOK、味見しながら調整で十分",
+        "醤油・酒・みりんはフライパン1周が目安",
+        "牛肉を入れることでメインおかずになるボリューム感に",
+        "ご飯がすすむ一品"
+      ]
+    },
+    {
+      id: 6,
+      name: "チキンライス（オムライス用）",
+      time: "15分",
+      timeUnknown: false,
+      difficulty: 2,
+      savedDate: "2026-06-14",
+      source: { text: "@nabeno_kitchen (Instagram)", url: "https://www.instagram.com/nabeno_kitchen/" },
+      ingredientGroups: [
+        { label: "具材", items: ["ごはん：200〜250g", "鶏もも肉：150g", "ピーマン：1/2個", "しいたけ：1個", "玉ねぎ：1/4個"] },
+        { label: "調味料", items: ["バター（有塩・無塩どちらでも）：15g", "料理酒：大さじ1", "塩コショウ：少々", "味の素：小さじ1", "ケチャップ：大さじ2"] }
+      ],
+      steps: [
+        "具材をなるべく同じ大きさにカットする",
+        "温める前のフライパンにバターと玉ねぎを入れて弱火で炒める",
+        "玉ねぎがしんなりしてきたら鶏肉を入れる",
+        "鶏肉の赤みがなくなればしいたけ、ピーマンを入れて炒める",
+        "ごはんと料理酒を入れて米をほぐしながら具材とあえる",
+        "全体が軽くほぐれたら下味（塩コショウ・味の素）をつけてよく混ぜる",
+        "フライパン中央にすき間をつくりケチャップを入れ、軽く煮詰めて酸味を飛ばす",
+        "ごはんに綺麗に混ざったら味見をしてオイスターソースで仕上げる"
+      ],
+      tips: [
+        "強火禁止！ 弱火でじっくり炒める。強火だと周りが焦げて中まで火が通らない",
+        "ケチャップを入れてからは焦げやすいので特に注意（自信がない人は弱火で）",
+        "鶏肉の代わりにベーコンやウィンナーでもOK",
+        "マッシュルームやニンジンを加えてもおいしい",
+        "詳しい工程はYouTube「なべのだいどころ。チキンライス」で確認推奨"
+      ]
+    },
+    {
+      id: 7,
+      name: "鶏もも肉とナスの照り焼き",
+      time: "",
+      timeUnknown: true,
+      difficulty: 1,
+      savedDate: "2026-06-14",
+      source: null,
+      ingredientGroups: [
+        { label: null, items: ["鶏もも肉：350g", "ナス：1本", "カットネギ：お好みで"] },
+        { label: "下味 ●", items: ["酒：大さじ1", "醤油：大さじ1"] },
+        { label: "衣・油", items: ["片栗粉：大さじ3", "油：大さじ2"] },
+        { label: "照りダレ ◎", items: ["醤油：大さじ1", "酒：大さじ1", "みりん：大さじ1", "砂糖：大さじ1"] }
+      ],
+      steps: [
+        "ナスは乱切り、もも肉は一口大に切り、ポリ袋に入れて●を揉み込み5分置く",
+        "①に片栗粉をまぶし、油をひいたフライパンで両面揚げ焼きする",
+        "鶏肉に火が通ったらナスを入れ炒め、弱火にして◎を入れ照りが出たら完成",
+        "お好みでカットネギを散らして召し上がれ"
+      ],
+      tips: [
+        "鶏肉を揚げ焼きした油は拭き取らず、そのままナスに吸わせる（旨みが染み込んで美味しくなる）",
+        "照りダレを入れてからは弱火でじっくり絡める",
+        "照り焼き風のこってり甘めの味付けでご飯がすすむ一品"
+      ]
+    },
+    {
+      id: 8,
+      name: "ちくわの肉巻き",
+      time: "約15分",
+      timeUnknown: false,
+      difficulty: 2,
+      savedDate: "2026-06-14",
+      source: { text: "手軽にかさ増し！ちくわの肉巻き (Delish Kitchen)", url: "https://delishkitchen.tv/recipes/158636408917983724" },
+      ingredientGroups: [
+        { label: "主材料", items: ["豚バラ薄切り肉：10枚", "ちくわ：10本", "ピザ用チーズ：適量", "片栗粉：適量", "サラダ油：大さじ1/2", "かいわれ：お好みで"] },
+        { label: "調味料", items: ["酒：大さじ1", "みりん：大さじ1", "砂糖：大さじ1", "しょうゆ：大さじ2"] }
+      ],
+      steps: [
+        "ちくわの中央に切れ目を入れ、ピザ用チーズを詰める",
+        "豚肉を広げてちくわを置き、手前から巻いて片栗粉をまぶす",
+        "フライパンに油を熱し、巻き終わりを下にして並べ、中火で転がしながら焼く",
+        "調味料を加えてからめる",
+        "器に盛り付けてかいわれを添える"
+      ],
+      tips: [
+        "チーズをたっぷり入れたちくわに豚肉を巻くことで食べ応えがアップする",
+        "お酒のおつまみにもおすすめ"
+      ]
+    },
+    {
+      id: 9,
+      name: "鶏肉のカシューナッツ炒め",
+      time: "約15分",
+      timeUnknown: false,
+      difficulty: 2,
+      savedDate: "2026-06-14",
+      source: { text: "簡単に本格中華！鶏肉のカシューナッツ炒め (Delish Kitchen)", url: "https://delishkitchen.tv/recipes/142003643355234793" },
+      ingredientGroups: [
+        { label: "主材料", items: ["鶏もも肉：1枚（300g）", "カシューナッツ：1袋（50g）", "玉ねぎ：1/2個", "ピーマン：3個", "にんにく：1かけ", "しょうが：1かけ", "サラダ油：少々"] },
+        { label: "下味用", items: ["片栗粉：大さじ2", "酒：大さじ1", "塩：少々"] },
+        { label: "合わせ調味料", items: ["酒：大さじ1", "しょうゆ：少々", "オイスターソース：大さじ1と1/2", "砂糖：小さじ1"] }
+      ],
+      steps: [
+        "にんにく、しょうがをみじん切りにする",
+        "ピーマン、玉ねぎを1cmの角切りにする",
+        "鶏肉を1cmの角切りにして下味をつけ、片栗粉をもみこむ",
+        "カシューナッツをから煎りする",
+        "油をひいたフライパンにしょうが、にんにくを入れ香りがでたら鶏肉を炒める",
+        "鶏肉に軽く火が通ったら、玉ねぎ、ピーマン、カシューナッツを入れて炒める",
+        "合わせ調味料をからめて完成"
+      ],
+      tips: [
+        "ビニール袋に鶏肉を入れてお酒と片栗粉を加えてもみもみすると、片栗粉が満遍なくつく"
+      ]
+    },
+    {
+      id: 10,
+      name: "白菜としめじのごまみそ炒め",
+      time: "約15分",
+      timeUnknown: false,
+      difficulty: 1,
+      savedDate: "2026-06-14",
+      source: { text: "ごはんがすすむ！白菜としめじのごまみそ炒め (Delish Kitchen)", url: "https://delishkitchen.tv/recipes/161938771405701523" },
+      ingredientGroups: [
+        { label: "主材料", items: ["白菜：1/8個", "しめじ：1パック", "豚もも薄切り肉：100g", "塩こしょう：少々", "サラダ油：大さじ1/2", "白いりごま：適量"] },
+        { label: "みそだれ", items: ["酒：大さじ1", "砂糖：小さじ1", "みそ：大さじ1", "白すりごま：大さじ1", "おろしにんにく：小さじ1/3"] }
+      ],
+      steps: [
+        "白菜を食べやすい大きさに切り、しめじは根元を切って手でほぐす",
+        "豚肉を3cm幅に切り、塩こしょうをふる",
+        "ボウルにみそだれの材料を混ぜる",
+        "フライパンにサラダ油を入れて熱し、豚肉を中火で炒める",
+        "しめじと白菜を加えて火が通るまで炒める",
+        "みそだれを加えて炒め、器に盛って白いりごまをふる"
+      ],
+      tips: []
+    },
+    {
+      id: 11,
+      name: "豚ロース肉のにんにくみそだれ炒め",
+      time: "約30分",
+      timeUnknown: false,
+      difficulty: 1,
+      savedDate: "2026-06-14",
+      source: { text: "こってりごはんが進む！豚ロース肉のにんにくみそだれ炒め (Delish Kitchen)", url: "https://delishkitchen.tv/recipes/196175910821430353" },
+      ingredientGroups: [
+        { label: "主材料", items: ["豚ロース薄切り肉：200g", "玉ねぎ：1/4個", "ピーマン：2個", "サラダ油：小さじ2"] },
+        { label: "調味料", items: ["酒：大さじ1と1/2", "砂糖：大さじ1/2", "みそ：大さじ1と1/2", "おろしにんにく：小さじ1/3"] }
+      ],
+      steps: [
+        "玉ねぎを薄切りにし、ピーマンは種を取り除いて細切りにする",
+        "豚肉を食べやすい大きさに切る",
+        "袋に調味料を入れ混ぜ、野菜と豚肉を加えてもみ込む",
+        "フライパンにサラダ油を入れ熱し、具材を入れて4〜6分中火で炒める"
+      ],
+      tips: [
+        "袋に具材も調味料も全て入れてもみ込むだけなので、下準備さえできればあっという間に作れる",
+        "鶏もも肉でのアレンジも可能"
+      ]
+    }
+  ];
+
+  function renderRecipeStars(difficulty) {
+    let html = '<span class="recipe-stars">';
+    for (let i = 1; i <= 3; i++) {
+      html += i <= difficulty ? '<span class="filled">★</span>' : '☆';
+    }
+    html += '</span>';
+    return html;
+  }
+
+  function allIngredientNames(recipe) {
+    const names = [];
+    recipe.ingredientGroups.forEach(g => {
+      g.items.forEach(item => {
+        names.push(item.split('：')[0]);
+      });
+    });
+    return names;
+  }
+
+  function renderRecipeList() {
+    const grid = document.getElementById('recipeGrid');
+    grid.innerHTML = '';
+
+    recipeList.forEach(recipe => {
+      const card = document.createElement('div');
+      card.className = 'recipe-card';
+      card.dataset.name = recipe.name;
+      card.dataset.difficulty = recipe.difficulty;
+      card.dataset.ingredients = allIngredientNames(recipe).join(',');
+
+      const timeBadge = recipe.timeUnknown
+        ? '<span class="recipe-time-badge unknown">時間不明</span>'
+        : `<span class="recipe-time-badge">${recipe.time}</span>`;
+
+      const ingredientsPreview = '材料: ' + allIngredientNames(recipe).join(', ');
+
+      let detailHtml = '<h4>材料</h4>';
+      recipe.ingredientGroups.forEach(group => {
+        if (group.label) {
+          detailHtml += `<div class="group-label">【${group.label}】</div>`;
+        }
+        detailHtml += '<ul>' + group.items.map(i => `<li>${i}</li>`).join('') + '</ul>';
+      });
+
+      detailHtml += '<h4>作り方</h4><ol>' + recipe.steps.map(s => `<li>${s}</li>`).join('') + '</ol>';
+
+      if (recipe.tips && recipe.tips.length > 0) {
+        detailHtml += '<h4>ポイント・メモ</h4><ul>' + recipe.tips.map(t => `<li>${t}</li>`).join('') + '</ul>';
+      }
+
+      if (recipe.source) {
+        detailHtml += `<div class="source">出典: <a href="${recipe.source.url}" target="_blank" rel="noopener">${recipe.source.text}</a></div>`;
+      }
+
+      card.innerHTML = `
+        <div class="recipe-card-header" onclick="this.closest('.recipe-card').classList.toggle('open')">
+          <div class="recipe-card-number">#${recipe.id}</div>
+          <div class="recipe-card-title">${recipe.name}</div>
+          <div class="recipe-toggle-icon">▾</div>
+        </div>
+        <div class="recipe-meta">
+          ${timeBadge}
+          ${renderRecipeStars(recipe.difficulty)}
+        </div>
+        <div class="recipe-ingredients-preview">${ingredientsPreview}</div>
+        <div class="recipe-saved-date">保存日: ${recipe.savedDate}</div>
+        <div class="recipe-detail">${detailHtml}</div>
+      `;
+
+      grid.appendChild(card);
+    });
+
+    applyRecipeFilter();
+  }
+
+  function applyRecipeFilter() {
+    const keyword = document.getElementById('recipeSearch').value.trim();
+    const difficulty = document.getElementById('recipeDifficultyFilter').value;
+    const cards = document.querySelectorAll('.recipe-card');
+    let visible = 0;
+
+    cards.forEach(card => {
+      const nameMatch = card.dataset.name.includes(keyword);
+      const ingredientMatch = card.dataset.ingredients.includes(keyword);
+      const diffMatch = !difficulty || card.dataset.difficulty === difficulty;
+      const show = (keyword === '' || nameMatch || ingredientMatch) && diffMatch;
+      card.style.display = show ? '' : 'none';
+      if (show) visible++;
+    });
+
+    document.getElementById('recipeEmptyMsg').style.display = visible === 0 ? 'block' : 'none';
+    document.getElementById('recipeCount').textContent = `全${cards.length}件中 ${visible}件を表示`;
+  }
+
+  document.getElementById('recipeSearch').addEventListener('input', applyRecipeFilter);
+  document.getElementById('recipeDifficultyFilter').addEventListener('change', applyRecipeFilter);
+
+  renderRecipeList();
 
   function openRecipe(id) {
     const r = recipes[id];
