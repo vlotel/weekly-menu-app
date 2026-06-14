@@ -1,0 +1,351 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="今週の晩御飯">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<title>今週の晩御飯</title>
+<style>
+  :root {
+    --bg: #f5f1e8;
+    --card: #ffffff;
+    --accent: #e8743b;
+    --text: #3a3a3a;
+    --sub: #8a8a8a;
+    --border: #ece4d8;
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    font-family: -apple-system, "Hiragino Sans", "Hiragino Kaku Gothic ProN", sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    padding-bottom: 90px;
+  }
+  header {
+    position: sticky;
+    top: 0;
+    background: var(--accent);
+    color: #fff;
+    padding: env(safe-area-inset-top, 16px) 16px 12px;
+    padding-top: calc(env(safe-area-inset-top, 0px) + 16px);
+    text-align: center;
+    z-index: 10;
+  }
+  header h1 {
+    margin: 0;
+    font-size: 18px;
+    font-weight: 600;
+  }
+  .tabs {
+    display: flex;
+    position: sticky;
+    top: 56px;
+    background: var(--bg);
+    z-index: 9;
+    border-bottom: 1px solid var(--border);
+  }
+  .tab {
+    flex: 1;
+    text-align: center;
+    padding: 12px 0;
+    font-size: 15px;
+    font-weight: 600;
+    color: var(--sub);
+    border-bottom: 3px solid transparent;
+  }
+  .tab.active {
+    color: var(--accent);
+    border-bottom-color: var(--accent);
+  }
+  main { padding: 12px 14px 24px; }
+  .page { display: none; }
+  .page.active { display: block; }
+
+  .day-card {
+    background: var(--card);
+    border-radius: 14px;
+    padding: 12px 16px;
+    margin-bottom: 10px;
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+  }
+  .day-badge {
+    flex: 0 0 44px;
+    height: 44px;
+    border-radius: 10px;
+    background: var(--accent);
+    color: #fff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 700;
+    font-size: 15px;
+  }
+  .day-badge.weekend { background: #c0533e; }
+  .day-info { flex: 1; }
+  .day-info .dish {
+    font-size: 16px;
+    font-weight: 700;
+    margin: 0 0 2px;
+  }
+  .day-info .meta {
+    font-size: 12px;
+    color: var(--sub);
+    margin: 0;
+  }
+
+  .section-title {
+    font-size: 13px;
+    font-weight: 700;
+    color: var(--sub);
+    margin: 18px 4px 8px;
+    letter-spacing: 0.05em;
+  }
+  .shop-card {
+    background: var(--card);
+    border-radius: 14px;
+    overflow: hidden;
+    margin-bottom: 12px;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+  }
+  .shop-item {
+    display: flex;
+    align-items: center;
+    padding: 12px 16px;
+    border-bottom: 1px solid var(--border);
+    font-size: 15px;
+  }
+  .shop-item:last-child { border-bottom: none; }
+  .shop-item input[type="checkbox"] {
+    width: 22px;
+    height: 22px;
+    margin-right: 12px;
+    accent-color: var(--accent);
+    flex-shrink: 0;
+  }
+  .shop-item label {
+    flex: 1;
+  }
+  .shop-item.checked label {
+    text-decoration: line-through;
+    color: var(--sub);
+  }
+
+  .progress {
+    font-size: 13px;
+    color: var(--sub);
+    text-align: right;
+    margin: -4px 4px 12px;
+  }
+  .reset-btn {
+    display: block;
+    width: 100%;
+    margin-top: 6px;
+    padding: 12px;
+    border: none;
+    border-radius: 12px;
+    background: var(--card);
+    color: var(--accent);
+    font-size: 14px;
+    font-weight: 600;
+  }
+  .note {
+    font-size: 12px;
+    color: var(--sub);
+    line-height: 1.6;
+    margin: 4px 4px 0;
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <h1>🍚 今週の晩御飯</h1>
+</header>
+
+<div class="tabs">
+  <div class="tab active" data-target="menu">献立</div>
+  <div class="tab" data-target="shopping">買い物リスト</div>
+</div>
+
+<main>
+  <!-- 献立ページ -->
+  <section id="menu" class="page active">
+    <div class="day-card">
+      <div class="day-badge">月</div>
+      <div class="day-info">
+        <p class="dish">チキン南蛮</p>
+        <p class="meta">鶏もも肉・タルタルソース付き</p>
+      </div>
+    </div>
+    <div class="day-card">
+      <div class="day-badge">火</div>
+      <div class="day-info">
+        <p class="dish">牛肉入りきんぴらごぼう</p>
+        <p class="meta">牛こま肉・ご飯がすすむ味付け</p>
+      </div>
+    </div>
+    <div class="day-card">
+      <div class="day-badge">水</div>
+      <div class="day-info">
+        <p class="dish">ピーマンの肉詰め</p>
+        <p class="meta">合いびき肉・2人分</p>
+      </div>
+    </div>
+    <div class="day-card">
+      <div class="day-badge">木</div>
+      <div class="day-info">
+        <p class="dish">鶏もも肉とナスの照り焼き</p>
+        <p class="meta">鶏もも肉・揚げ焼き</p>
+      </div>
+    </div>
+    <div class="day-card">
+      <div class="day-badge">金</div>
+      <div class="day-info">
+        <p class="dish">油揚げの肉詰め</p>
+        <p class="meta">豚ひき肉・餃子だれで食べる</p>
+      </div>
+    </div>
+    <div class="day-card">
+      <div class="day-badge weekend">土</div>
+      <div class="day-info">
+        <p class="dish">具沢山のふわっふわ焼き</p>
+        <p class="meta">鶏挽肉・はんぺん入り</p>
+      </div>
+    </div>
+    <div class="day-card">
+      <div class="day-badge weekend">日</div>
+      <div class="day-info">
+        <p class="dish">チキンライス（オムライス用）</p>
+        <p class="meta">鶏もも肉・卵を添えてオムライス風に</p>
+      </div>
+    </div>
+
+    <p class="note">※ 7レシピ中4品が鶏肉ベースです。レシピが増えたらバランスを調整していきます。</p>
+  </section>
+
+  <!-- 買い物リストページ -->
+  <section id="shopping" class="page">
+    <div class="progress" id="progress">0 / 0 チェック済み</div>
+
+    <div class="section-title">肉・魚</div>
+    <div class="shop-card" data-group="meat">
+      <div class="shop-item"><input type="checkbox" id="i1"><label for="i1">鶏もも肉：合計750g程度</label></div>
+      <div class="shop-item"><input type="checkbox" id="i2"><label for="i2">牛こま肉：200g</label></div>
+      <div class="shop-item"><input type="checkbox" id="i3"><label for="i3">合いびき肉（または豚ひき肉）：200〜250g</label></div>
+      <div class="shop-item"><input type="checkbox" id="i4"><label for="i4">豚ひき肉：200g</label></div>
+      <div class="shop-item"><input type="checkbox" id="i5"><label for="i5">鶏挽肉：250g</label></div>
+    </div>
+
+    <div class="section-title">野菜</div>
+    <div class="shop-card" data-group="veg">
+      <div class="shop-item"><input type="checkbox" id="i6"><label for="i6">ごぼう：1本</label></div>
+      <div class="shop-item"><input type="checkbox" id="i7"><label for="i7">にんじん：1/2本</label></div>
+      <div class="shop-item"><input type="checkbox" id="i8"><label for="i8">ピーマン：5個程度</label></div>
+      <div class="shop-item"><input type="checkbox" id="i9"><label for="i9">玉ねぎ：1個</label></div>
+      <div class="shop-item"><input type="checkbox" id="i10"><label for="i10">ナス：1本</label></div>
+      <div class="shop-item"><input type="checkbox" id="i11"><label for="i11">しいたけ：1パック</label></div>
+      <div class="shop-item"><input type="checkbox" id="i12"><label for="i12">ニラ：1/4束（小松菜でも可）</label></div>
+      <div class="shop-item"><input type="checkbox" id="i13"><label for="i13">長ねぎ：1本</label></div>
+      <div class="shop-item"><input type="checkbox" id="i14"><label for="i14">生姜：少々（チューブ可）</label></div>
+    </div>
+
+    <div class="section-title">卵・大豆製品・練り物など</div>
+    <div class="shop-card" data-group="other">
+      <div class="shop-item"><input type="checkbox" id="i15"><label for="i15">卵：2個（オムライスにするなら追加）</label></div>
+      <div class="shop-item"><input type="checkbox" id="i16"><label for="i16">油揚げ：2枚</label></div>
+      <div class="shop-item"><input type="checkbox" id="i17"><label for="i17">はんぺん：1枚（50g）</label></div>
+      <div class="shop-item"><input type="checkbox" id="i18"><label for="i18">サラダスティック（カニ風味かまぼこ）：5本</label></div>
+    </div>
+
+    <div class="section-title">主食・その他</div>
+    <div class="shop-card" data-group="staple">
+      <div class="shop-item"><input type="checkbox" id="i19"><label for="i19">ごはん：200〜250g</label></div>
+      <div class="shop-item"><input type="checkbox" id="i20"><label for="i20">バター：15g</label></div>
+      <div class="shop-item"><input type="checkbox" id="i21"><label for="i21">粉チーズ：大さじ1</label></div>
+    </div>
+
+    <div class="section-title">調味料（在庫確認）</div>
+    <div class="shop-card" data-group="seasoning">
+      <div class="shop-item"><input type="checkbox" id="i22"><label for="i22">醤油</label></div>
+      <div class="shop-item"><input type="checkbox" id="i23"><label for="i23">料理酒</label></div>
+      <div class="shop-item"><input type="checkbox" id="i24"><label for="i24">みりん</label></div>
+      <div class="shop-item"><input type="checkbox" id="i25"><label for="i25">砂糖</label></div>
+      <div class="shop-item"><input type="checkbox" id="i26"><label for="i26">塩・こしょう</label></div>
+      <div class="shop-item"><input type="checkbox" id="i27"><label for="i27">片栗粉</label></div>
+      <div class="shop-item"><input type="checkbox" id="i28"><label for="i28">ごま・ごま油</label></div>
+      <div class="shop-item"><input type="checkbox" id="i29"><label for="i29">サラダ油</label></div>
+      <div class="shop-item"><input type="checkbox" id="i30"><label for="i30">マヨネーズ・ケチャップ</label></div>
+      <div class="shop-item"><input type="checkbox" id="i31"><label for="i31">味の素・一味唐辛子</label></div>
+      <div class="shop-item"><input type="checkbox" id="i32"><label for="i32">付けダレ用（酢・カラシ・ポン酢など）</label></div>
+    </div>
+
+    <button class="reset-btn" id="resetBtn">チェックをすべてリセット</button>
+  </section>
+</main>
+
+<script>
+  // タブ切り替え
+  document.querySelectorAll('.tab').forEach(tab => {
+    tab.addEventListener('click', () => {
+      document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+      document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+      tab.classList.add('active');
+      document.getElementById(tab.dataset.target).classList.add('active');
+    });
+  });
+
+  // チェック状態をlocalStorageに保存
+  const checkboxes = document.querySelectorAll('.shop-item input[type="checkbox"]');
+  const STORAGE_KEY = 'shoppingListChecks';
+
+  function loadChecks() {
+    const saved = JSON.parse(localStorage.getItem(STORAGE_KEY) || '{}');
+    checkboxes.forEach(cb => {
+      if (saved[cb.id]) {
+        cb.checked = true;
+        cb.closest('.shop-item').classList.add('checked');
+      }
+    });
+    updateProgress();
+  }
+
+  function saveChecks() {
+    const state = {};
+    checkboxes.forEach(cb => { state[cb.id] = cb.checked; });
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
+  }
+
+  function updateProgress() {
+    const total = checkboxes.length;
+    const checked = document.querySelectorAll('.shop-item input:checked').length;
+    document.getElementById('progress').textContent = `${checked} / ${total} チェック済み`;
+  }
+
+  checkboxes.forEach(cb => {
+    cb.addEventListener('change', () => {
+      cb.closest('.shop-item').classList.toggle('checked', cb.checked);
+      saveChecks();
+      updateProgress();
+    });
+  });
+
+  document.getElementById('resetBtn').addEventListener('click', () => {
+    checkboxes.forEach(cb => {
+      cb.checked = false;
+      cb.closest('.shop-item').classList.remove('checked');
+    });
+    saveChecks();
+    updateProgress();
+  });
+
+  loadChecks();
+</script>
+
+</body>
+</html>
