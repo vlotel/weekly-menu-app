@@ -428,43 +428,45 @@
 <main>
   <!-- 献立ページ -->
   <section id="menu" class="page active">
-    <div class="day-card" onclick="openRecipe('chicken_eggplant_teriyaki')">
+    <div class="day-card" onclick="openRecipe('chicken_radish_teriyaki')">
       <div class="day-badge">月</div>
       <div class="day-info">
-        <p class="dish">鶏もも肉とナスの照り焼き</p>
-        <p class="meta">鶏もも肉・揚げ焼き</p>
+        <p class="dish">鶏肉と大根のとろ照り煮</p>
+        <p class="meta">鶏もも肉・大根、コトコト煮込み</p>
       </div>
       <div class="chevron">›</div>
     </div>
-    <div class="day-card" onclick="openRecipe('beef_kinpira')">
+    <div class="day-card" onclick="openRecipe('beef_moyashi_gochujang')">
       <div class="day-badge">火</div>
       <div class="day-info">
-        <p class="dish">牛肉入りきんぴらごぼう</p>
-        <p class="meta">牛こま肉・ご飯がすすむ味付け</p>
+        <p class="dish">豆もやしと牛肉のコチュジャン炒め</p>
+        <p class="meta">牛こま肉・コチュジャンでピリ辛</p>
       </div>
       <div class="chevron">›</div>
     </div>
-    <div class="day-card" onclick="openRecipe('tofu_pouch_meat_stuffing')">
+    <div class="day-card" onclick="openRecipe('broccoli_pork_ginger_stew')">
       <div class="day-badge">水</div>
       <div class="day-info">
-        <p class="dish">油揚げの肉詰め</p>
-        <p class="meta">豚ひき肉・餃子だれで食べる</p>
+        <p class="dish">ブロッコリーと豚肉のしょうが煮</p>
+        <p class="meta">豚ロース肉・野菜たっぷりの煮物</p>
       </div>
       <div class="chevron">›</div>
     </div>
-    <div class="day-card no-recipe">
+    <div class="day-card" onclick="openRecipe('qingjiao_rousi')">
       <div class="day-badge">木</div>
       <div class="day-info">
-        <p class="dish">未定</p>
-        <p class="meta">献立なし</p>
+        <p class="dish">青椒肉絲</p>
+        <p class="meta">豚ロース・ピーマン・たけのこ</p>
       </div>
+      <div class="chevron">›</div>
     </div>
-    <div class="day-card no-recipe">
+    <div class="day-card" onclick="openRecipe('easy_bulgogi')">
       <div class="day-badge">金</div>
       <div class="day-info">
-        <p class="dish">未定</p>
-        <p class="meta">献立なし</p>
+        <p class="dish">簡単プルコギ</p>
+        <p class="meta">牛こま肉・甘辛だれで簡単</p>
       </div>
+      <div class="chevron">›</div>
     </div>
     <div class="day-card no-recipe">
       <div class="day-badge weekend">土</div>
@@ -481,7 +483,7 @@
       </div>
     </div>
 
-    <p class="note">※ 月〜水の3日分の献立です（鶏・牛・豚でバランスを取りました）。木〜日は未定です。</p>
+    <p class="note">※ 月〜金の5日分の献立です（鶏・牛・豚でバランスを取りました）。土・日は未定です。</p>
   </section>
 
   <!-- 買い物リストページ -->
@@ -490,38 +492,45 @@
 
     <div class="section-title">肉・魚</div>
     <div class="shop-card" data-group="meat">
-      <div class="shop-item"><input type="checkbox" id="i1"><label for="i1">鶏もも肉：350g</label></div>
-      <div class="shop-item"><input type="checkbox" id="i2"><label for="i2">牛こま肉：200g</label></div>
-      <div class="shop-item"><input type="checkbox" id="i3"><label for="i3">豚ひき肉：200g</label></div>
+      <div class="shop-item"><input type="checkbox" id="i1"><label for="i1">鶏もも肉：1枚（300g）</label></div>
+      <div class="shop-item"><input type="checkbox" id="i2"><label for="i2">牛こま切れ肉：350g（火・金で使用）</label></div>
+      <div class="shop-item"><input type="checkbox" id="i3"><label for="i3">豚ロース肉（角切り用）：200g</label></div>
+      <div class="shop-item"><input type="checkbox" id="i4"><label for="i4">厚切り豚ロース：230g</label></div>
     </div>
 
     <div class="section-title">野菜</div>
     <div class="shop-card" data-group="veg">
-      <div class="shop-item"><input type="checkbox" id="i4"><label for="i4">ナス：1本</label></div>
-      <div class="shop-item"><input type="checkbox" id="i5"><label for="i5">ごぼう：1本</label></div>
-      <div class="shop-item"><input type="checkbox" id="i6"><label for="i6">にんじん：1/2本</label></div>
-      <div class="shop-item"><input type="checkbox" id="i7"><label for="i7">ニラ：1/4束（小松菜でも可）</label></div>
-      <div class="shop-item"><input type="checkbox" id="i8"><label for="i8">長ねぎ：お好みで少量（照り焼きの薬味用）</label></div>
-      <div class="shop-item"><input type="checkbox" id="i9"><label for="i9">生姜：少々（チューブ可）</label></div>
+      <div class="shop-item"><input type="checkbox" id="i5"><label for="i5">大根：1/3本</label></div>
+      <div class="shop-item"><input type="checkbox" id="i6"><label for="i6">ブロッコリー：1/2株</label></div>
+      <div class="shop-item"><input type="checkbox" id="i7"><label for="i7">えのき：1/2袋</label></div>
+      <div class="shop-item"><input type="checkbox" id="i8"><label for="i8">豆もやし：1/2袋</label></div>
+      <div class="shop-item"><input type="checkbox" id="i9"><label for="i9">ニラ：1/2束</label></div>
+      <div class="shop-item"><input type="checkbox" id="i10"><label for="i10">たけのこ：100g</label></div>
+      <div class="shop-item"><input type="checkbox" id="i11"><label for="i11">ピーマン：5個程度</label></div>
+      <div class="shop-item"><input type="checkbox" id="i12"><label for="i12">玉ねぎ：1/2個</label></div>
+      <div class="shop-item"><input type="checkbox" id="i13"><label for="i13">にんじん：1/4本</label></div>
+      <div class="shop-item"><input type="checkbox" id="i14"><label for="i14">しょうが：1かけ</label></div>
     </div>
 
     <div class="section-title">卵・大豆製品・練り物など</div>
     <div class="shop-card" data-group="other">
-      <div class="shop-item"><input type="checkbox" id="i10"><label for="i10">油揚げ：2枚</label></div>
+      <div class="shop-item"><input type="checkbox" id="i15"><label for="i15">ゆで卵：2個（あれば）</label></div>
     </div>
 
     <div class="section-title">調味料（在庫確認）</div>
     <div class="shop-card" data-group="seasoning">
-      <div class="shop-item"><input type="checkbox" id="i11"><label for="i11">醤油</label></div>
-      <div class="shop-item"><input type="checkbox" id="i12"><label for="i12">料理酒</label></div>
-      <div class="shop-item"><input type="checkbox" id="i13"><label for="i13">みりん</label></div>
-      <div class="shop-item"><input type="checkbox" id="i14"><label for="i14">砂糖</label></div>
-      <div class="shop-item"><input type="checkbox" id="i15"><label for="i15">塩・こしょう</label></div>
-      <div class="shop-item"><input type="checkbox" id="i16"><label for="i16">片栗粉</label></div>
-      <div class="shop-item"><input type="checkbox" id="i17"><label for="i17">サラダ油・ごま油</label></div>
-      <div class="shop-item"><input type="checkbox" id="i18"><label for="i18">ごま</label></div>
-      <div class="shop-item"><input type="checkbox" id="i19"><label for="i19">一味唐辛子</label></div>
-      <div class="shop-item"><input type="checkbox" id="i20"><label for="i20">付けダレ用（酢・醤油・カラシ・ポン酢など）</label></div>
+      <div class="shop-item"><input type="checkbox" id="i16"><label for="i16">醤油</label></div>
+      <div class="shop-item"><input type="checkbox" id="i17"><label for="i17">料理酒（紹興酒があれば）</label></div>
+      <div class="shop-item"><input type="checkbox" id="i18"><label for="i18">みりん</label></div>
+      <div class="shop-item"><input type="checkbox" id="i19"><label for="i19">砂糖</label></div>
+      <div class="shop-item"><input type="checkbox" id="i20"><label for="i20">塩・こしょう</label></div>
+      <div class="shop-item"><input type="checkbox" id="i21"><label for="i21">片栗粉</label></div>
+      <div class="shop-item"><input type="checkbox" id="i22"><label for="i22">サラダ油・ごま油</label></div>
+      <div class="shop-item"><input type="checkbox" id="i23"><label for="i23">和風だしの素</label></div>
+      <div class="shop-item"><input type="checkbox" id="i24"><label for="i24">しょうがチューブ・にんにくチューブ</label></div>
+      <div class="shop-item"><input type="checkbox" id="i25"><label for="i25">コチュジャン</label></div>
+      <div class="shop-item"><input type="checkbox" id="i26"><label for="i26">鶏ガラスープの素</label></div>
+      <div class="shop-item"><input type="checkbox" id="i27"><label for="i27">オイスターソース</label></div>
     </div>
 
     <button class="reset-btn" id="resetBtn">チェックをすべてリセット</button>
@@ -710,6 +719,94 @@
         'ケチャップを入れてからは焦げやすいので特に注意（自信がない人は弱火で）',
         '鶏肉の代わりにベーコンやウィンナーでもOK',
         'マッシュルームやニンジンを加えてもおいしい'
+      ]
+    },
+    chicken_radish_teriyaki: {
+      title: '鶏肉と大根のとろ照り煮',
+      info: '調理時間：約35分（冷ます時間を除く）／人数：2人分／難易度：★★☆',
+      ingredients: [
+        { group: null, items: ['鶏もも肉：1枚（300g）', '大根：1/3本くらい（400g）', 'ゆで卵：2個（あれば）', 'サラダ油：大さじ1/2'] },
+        { group: '下味', items: ['しょうゆ：小さじ1', '酒：小さじ1'] },
+        { group: '煮込み用', items: ['水：300ml', '砂糖：大さじ2', 'しょうゆ：大さじ2', '酒：大さじ2', 'みりん：大さじ2', '和風だしの素：小さじ1', 'しょうがチューブ：1〜2cm'] }
+      ],
+      steps: [
+        '鶏肉を一口大に切り下味を揉み込む。大根は皮をむき1.5cm幅の半月切りにする',
+        'フライパンで鶏肉と大根を焼く（皮目3分、裏返して2分）',
+        '調味液を加えて落とし蓋をし、弱めの中火で約25分煮る。ゆで卵を加えて冷ます',
+        '強めの中火で煮詰め、照りととろみがついたら完成'
+      ],
+      tips: []
+    },
+    beef_moyashi_gochujang: {
+      title: '豆もやしと牛肉のコチュジャン炒め',
+      info: '調理時間：約15分／人数：2人分／難易度：★☆☆',
+      ingredients: [
+        { group: '主材料', items: ['牛こま切れ肉：150g', '豆もやし：1/2袋', 'ニラ：1/2束', '片栗粉：大さじ2', 'ごま油：大さじ1/2', '塩こしょう：少々'] },
+        { group: '調味料', items: ['酒：大さじ1', '砂糖：小さじ1', 'しょうゆ：大さじ1/2', 'コチュジャン：大さじ1'] }
+      ],
+      steps: [
+        'ニラを6cm幅に切る',
+        'ボウルに牛肉を入れ、片栗粉をまぶす',
+        '調味料を混ぜ合わせる',
+        'フライパンでごま油を熱し、牛肉を焼き色がつくまで炒める',
+        '豆もやし、ニラを加えてしんなりさせ、調味料を加えて仕上げる'
+      ],
+      tips: [
+        '甘辛コチュジャンとごま油の香りが食欲をそそる',
+        'にんじんやじゃがいもを追加するのもおすすめ'
+      ]
+    },
+    broccoli_pork_ginger_stew: {
+      title: 'ブロッコリーと豚肉のしょうが煮',
+      info: '調理時間：約15分／人数：2人分／難易度：★☆☆',
+      ingredients: [
+        { group: null, items: ['ブロッコリー：1/2株', '豚ロース肉（角切り）：200g', 'えのき：1/2袋（100g）', 'しょうが：1かけ', 'サラダ油：大さじ1'] },
+        { group: '調味料', items: ['酒：大さじ1', '砂糖：大さじ1/2', 'しょうゆ：大さじ1', '水：200cc'] }
+      ],
+      steps: [
+        'ブロッコリーを小房に分け、えのきは根元を切って小分けにし、しょうがは細切りにする',
+        '鍋に油としょうがを入れて熱し、香りが出たら豚肉を加えて中火で色が変わるまで炒める',
+        'えのきを加えてさっと炒め、調味料を加えて煮立たせたら蓋をして弱火で5分煮る',
+        'ブロッコリーを加え、中火で3分ほど火が通るまで煮る'
+      ],
+      tips: []
+    },
+    qingjiao_rousi: {
+      title: '青椒肉絲',
+      info: '調理時間：不明／人数：2人分／難易度：★★☆',
+      ingredients: [
+        { group: null, items: ['厚切り豚ロース：230g', 'たけのこ：100g', 'ピーマン：3個'] },
+        { group: '下味', items: ['塩こしょう：少々', '醤油：小さじ1', '酒：大さじ1', '片栗粉：大さじ1/2', '油：小さじ1'] },
+        { group: '調味料', items: ['鶏ガラスープの素：小さじ1', '砂糖：小さじ1', '酒（または紹興酒）：大さじ1', 'みりん：小さじ1', '醤油：大さじ1', 'オイスターソース：小さじ1', 'にんにくチューブ：適量', 'しょうがチューブ：適量', 'ごま油：小さじ1', '片栗粉：小さじ1/2'] }
+      ],
+      steps: [
+        '豚肉、ピーマン、たけのこを細切りにする',
+        '豚肉に下味の調味料を順番に加えて揉み込む',
+        '調味料をあらかじめ混ぜておく',
+        'フライパンに油を入れ、豚肉をほぐしながら炒める',
+        '肉の色が変わったらたけのこを加える',
+        'ピーマンを加えて軽く炒める',
+        '火を止めて調味料を加える',
+        '強火で一気に炒めてとろみがついたら完成'
+      ],
+      tips: []
+    },
+    easy_bulgogi: {
+      title: '簡単プルコギ',
+      info: '調理時間：約10分／人数：2〜3人分／難易度：★☆☆',
+      ingredients: [
+        { group: '主材料', items: ['牛こま切れ肉：200g', '玉ねぎ：1/2個', 'にんじん：1/4本', 'ピーマン：2個', 'サラダ油：小さじ2'] },
+        { group: '調味料（■）', items: ['料理酒：大さじ2', 'みりん：大さじ2', '醤油：大さじ2', '砂糖：小さじ1', 'ニンニクチューブ：3cm', '生姜チューブ：3cm', 'コチュジャン：大さじ1'] }
+      ],
+      steps: [
+        'ボウルに調味料（■）をすべて混ぜ、牛肉を漬ける（5分程度）',
+        'ピーマン、玉ねぎ、にんじんを細切りにする',
+        '熱したフライパンに油をしき野菜を入れ、その上に漬けた肉をタレごと加える',
+        '平らにならして蓋をし、蒸し焼きにする（5分程度）',
+        '肉に火が通ったら全体を混ぜて完成'
+      ],
+      tips: [
+        '漬け込みから蒸し焼きまでなので手早く作れる'
       ]
     }
   };
