@@ -264,15 +264,15 @@
 <main>
   <!-- 献立ページ -->
   <section id="menu" class="page active">
-    <div class="day-card" onclick="openRecipe('mon')">
+    <div class="day-card" onclick="openRecipe('chicken_eggplant_teriyaki')">
       <div class="day-badge">月</div>
       <div class="day-info">
-        <p class="dish">チキン南蛮</p>
-        <p class="meta">鶏もも肉・タルタルソース付き</p>
+        <p class="dish">鶏もも肉とナスの照り焼き</p>
+        <p class="meta">鶏もも肉・揚げ焼き</p>
       </div>
       <div class="chevron">›</div>
     </div>
-    <div class="day-card" onclick="openRecipe('tue')">
+    <div class="day-card" onclick="openRecipe('beef_kinpira')">
       <div class="day-badge">火</div>
       <div class="day-info">
         <p class="dish">牛肉入りきんぴらごぼう</p>
@@ -280,48 +280,44 @@
       </div>
       <div class="chevron">›</div>
     </div>
-    <div class="day-card" onclick="openRecipe('wed')">
+    <div class="day-card" onclick="openRecipe('tofu_pouch_meat_stuffing')">
       <div class="day-badge">水</div>
-      <div class="day-info">
-        <p class="dish">ピーマンの肉詰め</p>
-        <p class="meta">合いびき肉・2人分</p>
-      </div>
-      <div class="chevron">›</div>
-    </div>
-    <div class="day-card" onclick="openRecipe('thu')">
-      <div class="day-badge">木</div>
-      <div class="day-info">
-        <p class="dish">鶏もも肉とナスの照り焼き</p>
-        <p class="meta">鶏もも肉・揚げ焼き</p>
-      </div>
-      <div class="chevron">›</div>
-    </div>
-    <div class="day-card" onclick="openRecipe('fri')">
-      <div class="day-badge">金</div>
       <div class="day-info">
         <p class="dish">油揚げの肉詰め</p>
         <p class="meta">豚ひき肉・餃子だれで食べる</p>
       </div>
       <div class="chevron">›</div>
     </div>
-    <div class="day-card" onclick="openRecipe('sat')">
+    <div class="day-card no-recipe">
+      <div class="day-badge">木</div>
+      <div class="day-info">
+        <p class="dish">未定</p>
+        <p class="meta">献立なし</p>
+      </div>
+    </div>
+    <div class="day-card no-recipe">
+      <div class="day-badge">金</div>
+      <div class="day-info">
+        <p class="dish">未定</p>
+        <p class="meta">献立なし</p>
+      </div>
+    </div>
+    <div class="day-card no-recipe">
       <div class="day-badge weekend">土</div>
       <div class="day-info">
-        <p class="dish">具沢山のふわっふわ焼き</p>
-        <p class="meta">鶏挽肉・はんぺん入り</p>
+        <p class="dish">未定</p>
+        <p class="meta">献立なし</p>
       </div>
-      <div class="chevron">›</div>
     </div>
-    <div class="day-card" onclick="openRecipe('sun')">
+    <div class="day-card no-recipe">
       <div class="day-badge weekend">日</div>
       <div class="day-info">
-        <p class="dish">チキンライス（オムライス用）</p>
-        <p class="meta">鶏もも肉・卵を添えてオムライス風に</p>
+        <p class="dish">未定</p>
+        <p class="meta">献立なし</p>
       </div>
-      <div class="chevron">›</div>
     </div>
 
-    <p class="note">※ 7レシピ中4品が鶏肉ベースです。レシピが増えたらバランスを調整していきます。</p>
+    <p class="note">※ 月〜水の3日分の献立です（鶏・牛・豚でバランスを取りました）。木〜日は未定です。</p>
   </section>
 
   <!-- 買い物リストページ -->
@@ -330,54 +326,38 @@
 
     <div class="section-title">肉・魚</div>
     <div class="shop-card" data-group="meat">
-      <div class="shop-item"><input type="checkbox" id="i1"><label for="i1">鶏もも肉：合計750g程度</label></div>
+      <div class="shop-item"><input type="checkbox" id="i1"><label for="i1">鶏もも肉：350g</label></div>
       <div class="shop-item"><input type="checkbox" id="i2"><label for="i2">牛こま肉：200g</label></div>
-      <div class="shop-item"><input type="checkbox" id="i3"><label for="i3">合いびき肉（または豚ひき肉）：200〜250g</label></div>
-      <div class="shop-item"><input type="checkbox" id="i4"><label for="i4">豚ひき肉：200g</label></div>
-      <div class="shop-item"><input type="checkbox" id="i5"><label for="i5">鶏挽肉：250g</label></div>
+      <div class="shop-item"><input type="checkbox" id="i3"><label for="i3">豚ひき肉：200g</label></div>
     </div>
 
     <div class="section-title">野菜</div>
     <div class="shop-card" data-group="veg">
-      <div class="shop-item"><input type="checkbox" id="i6"><label for="i6">ごぼう：1本</label></div>
-      <div class="shop-item"><input type="checkbox" id="i7"><label for="i7">にんじん：1/2本</label></div>
-      <div class="shop-item"><input type="checkbox" id="i8"><label for="i8">ピーマン：5個程度</label></div>
-      <div class="shop-item"><input type="checkbox" id="i9"><label for="i9">玉ねぎ：1個</label></div>
-      <div class="shop-item"><input type="checkbox" id="i10"><label for="i10">ナス：1本</label></div>
-      <div class="shop-item"><input type="checkbox" id="i11"><label for="i11">しいたけ：1パック</label></div>
-      <div class="shop-item"><input type="checkbox" id="i12"><label for="i12">ニラ：1/4束（小松菜でも可）</label></div>
-      <div class="shop-item"><input type="checkbox" id="i13"><label for="i13">長ねぎ：1本</label></div>
-      <div class="shop-item"><input type="checkbox" id="i14"><label for="i14">生姜：少々（チューブ可）</label></div>
+      <div class="shop-item"><input type="checkbox" id="i4"><label for="i4">ナス：1本</label></div>
+      <div class="shop-item"><input type="checkbox" id="i5"><label for="i5">ごぼう：1本</label></div>
+      <div class="shop-item"><input type="checkbox" id="i6"><label for="i6">にんじん：1/2本</label></div>
+      <div class="shop-item"><input type="checkbox" id="i7"><label for="i7">ニラ：1/4束（小松菜でも可）</label></div>
+      <div class="shop-item"><input type="checkbox" id="i8"><label for="i8">長ねぎ：お好みで少量（照り焼きの薬味用）</label></div>
+      <div class="shop-item"><input type="checkbox" id="i9"><label for="i9">生姜：少々（チューブ可）</label></div>
     </div>
 
     <div class="section-title">卵・大豆製品・練り物など</div>
     <div class="shop-card" data-group="other">
-      <div class="shop-item"><input type="checkbox" id="i15"><label for="i15">卵：2個（オムライスにするなら追加）</label></div>
-      <div class="shop-item"><input type="checkbox" id="i16"><label for="i16">油揚げ：2枚</label></div>
-      <div class="shop-item"><input type="checkbox" id="i17"><label for="i17">はんぺん：1枚（50g）</label></div>
-      <div class="shop-item"><input type="checkbox" id="i18"><label for="i18">サラダスティック（カニ風味かまぼこ）：5本</label></div>
-    </div>
-
-    <div class="section-title">主食・その他</div>
-    <div class="shop-card" data-group="staple">
-      <div class="shop-item"><input type="checkbox" id="i19"><label for="i19">ごはん：200〜250g</label></div>
-      <div class="shop-item"><input type="checkbox" id="i20"><label for="i20">バター：15g</label></div>
-      <div class="shop-item"><input type="checkbox" id="i21"><label for="i21">粉チーズ：大さじ1</label></div>
+      <div class="shop-item"><input type="checkbox" id="i10"><label for="i10">油揚げ：2枚</label></div>
     </div>
 
     <div class="section-title">調味料（在庫確認）</div>
     <div class="shop-card" data-group="seasoning">
-      <div class="shop-item"><input type="checkbox" id="i22"><label for="i22">醤油</label></div>
-      <div class="shop-item"><input type="checkbox" id="i23"><label for="i23">料理酒</label></div>
-      <div class="shop-item"><input type="checkbox" id="i24"><label for="i24">みりん</label></div>
-      <div class="shop-item"><input type="checkbox" id="i25"><label for="i25">砂糖</label></div>
-      <div class="shop-item"><input type="checkbox" id="i26"><label for="i26">塩・こしょう</label></div>
-      <div class="shop-item"><input type="checkbox" id="i27"><label for="i27">片栗粉</label></div>
-      <div class="shop-item"><input type="checkbox" id="i28"><label for="i28">ごま・ごま油</label></div>
-      <div class="shop-item"><input type="checkbox" id="i29"><label for="i29">サラダ油</label></div>
-      <div class="shop-item"><input type="checkbox" id="i30"><label for="i30">マヨネーズ・ケチャップ</label></div>
-      <div class="shop-item"><input type="checkbox" id="i31"><label for="i31">味の素・一味唐辛子</label></div>
-      <div class="shop-item"><input type="checkbox" id="i32"><label for="i32">付けダレ用（酢・カラシ・ポン酢など）</label></div>
+      <div class="shop-item"><input type="checkbox" id="i11"><label for="i11">醤油</label></div>
+      <div class="shop-item"><input type="checkbox" id="i12"><label for="i12">料理酒</label></div>
+      <div class="shop-item"><input type="checkbox" id="i13"><label for="i13">みりん</label></div>
+      <div class="shop-item"><input type="checkbox" id="i14"><label for="i14">砂糖</label></div>
+      <div class="shop-item"><input type="checkbox" id="i15"><label for="i15">塩・こしょう</label></div>
+      <div class="shop-item"><input type="checkbox" id="i16"><label for="i16">片栗粉</label></div>
+      <div class="shop-item"><input type="checkbox" id="i17"><label for="i17">サラダ油・ごま油</label></div>
+      <div class="shop-item"><input type="checkbox" id="i18"><label for="i18">ごま</label></div>
+      <div class="shop-item"><input type="checkbox" id="i19"><label for="i19">一味唐辛子</label></div>
+      <div class="shop-item"><input type="checkbox" id="i20"><label for="i20">付けダレ用（酢・醤油・カラシ・ポン酢など）</label></div>
     </div>
 
     <button class="reset-btn" id="resetBtn">チェックをすべてリセット</button>
@@ -403,7 +383,7 @@
 <script>
   // レシピデータ
   const recipes = {
-    mon: {
+    chicken_nanban: {
       title: 'チキン南蛮',
       info: '調理時間：約15分／人数：1〜2人分／難易度：★☆☆',
       ingredients: [
@@ -423,7 +403,7 @@
         '黄身に穴を開けないとレンチン中に破裂するので注意'
       ]
     },
-    tue: {
+    beef_kinpira: {
       title: '牛肉入りきんぴらごぼう',
       info: '調理時間：不明／人数：不明／難易度：★☆☆',
       ingredients: [
@@ -442,7 +422,7 @@
         'ご飯がすすむ一品'
       ]
     },
-    wed: {
+    pepper_meat_stuffing: {
       title: 'ピーマンの肉詰め',
       info: '調理時間：不明／人数：2人分／難易度：★☆☆',
       ingredients: [
@@ -467,7 +447,7 @@
         '蒸し焼き後にタレを絡めてテリテリに仕上げるのがポイント'
       ]
     },
-    thu: {
+    chicken_eggplant_teriyaki: {
       title: '鶏もも肉とナスの照り焼き',
       info: '調理時間：不明／人数：2人分／難易度：★☆☆',
       ingredients: [
@@ -488,7 +468,7 @@
         '照り焼き風のこってり甘めの味付けでご飯がすすむ一品'
       ]
     },
-    fri: {
+    tofu_pouch_meat_stuffing: {
       title: '油揚げの肉詰め',
       info: '調理時間：不明／人数：4つ分／難易度：★☆☆',
       ingredients: [
@@ -510,7 +490,7 @@
         '付けダレは餃子用のものと同じでOK（酢＋醤油＋カラシ、またはポン酢など）'
       ]
     },
-    sat: {
+    fluffy_chicken_patty: {
       title: '具沢山のふわっふわ焼き',
       info: '調理時間：不明／人数：作りやすい分量（4個）／難易度：★☆☆',
       ingredients: [
@@ -528,7 +508,7 @@
         '蒸し焼きにすることで中までしっかり火が通る'
       ]
     },
-    sun: {
+    chicken_rice_omurice: {
       title: 'チキンライス（オムライス用）',
       info: '調理時間：15分／人数：1人分／難易度：★★☆',
       ingredients: [
