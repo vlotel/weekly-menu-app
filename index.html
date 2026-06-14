@@ -160,6 +160,87 @@
     line-height: 1.6;
     margin: 4px 4px 0;
   }
+
+  .day-card {
+    cursor: pointer;
+    -webkit-tap-highlight-color: transparent;
+  }
+  .chevron {
+    color: var(--sub);
+    font-size: 20px;
+    flex-shrink: 0;
+  }
+
+  .modal-overlay {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.45);
+    z-index: 100;
+    align-items: flex-end;
+    justify-content: center;
+  }
+  .modal-overlay.show { display: flex; }
+  .modal-content {
+    background: var(--card);
+    width: 100%;
+    max-width: 480px;
+    max-height: 82vh;
+    border-radius: 20px 20px 0 0;
+    padding: 18px 18px calc(20px + env(safe-area-inset-bottom, 0px));
+    overflow-y: auto;
+    animation: slideUp 0.25s ease-out;
+  }
+  @keyframes slideUp {
+    from { transform: translateY(100%); }
+    to { transform: translateY(0); }
+  }
+  .modal-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 12px;
+  }
+  .modal-header h2 {
+    margin: 0;
+    font-size: 19px;
+  }
+  .modal-close {
+    background: var(--bg);
+    border: none;
+    border-radius: 50%;
+    width: 32px;
+    height: 32px;
+    font-size: 18px;
+    line-height: 1;
+    color: var(--sub);
+    flex-shrink: 0;
+  }
+  .modal-meta {
+    font-size: 12px;
+    color: var(--sub);
+    margin: 4px 0 0;
+  }
+  .modal-section-title {
+    font-size: 14px;
+    font-weight: 700;
+    color: var(--accent);
+    margin: 18px 0 8px;
+  }
+  .ingredient-group {
+    font-size: 12px;
+    font-weight: 700;
+    color: var(--sub);
+    margin: 10px 0 4px;
+  }
+  .modal-content ul, .modal-content ol {
+    margin: 0;
+    padding-left: 22px;
+    font-size: 14px;
+    line-height: 1.8;
+  }
+  .modal-content li { margin-bottom: 4px; }
+  .tip-list li { color: #6a6a6a; }
 </style>
 </head>
 <body>
@@ -176,54 +257,61 @@
 <main>
   <!-- 献立ページ -->
   <section id="menu" class="page active">
-    <div class="day-card">
+    <div class="day-card" onclick="openRecipe('mon')">
       <div class="day-badge">月</div>
       <div class="day-info">
         <p class="dish">チキン南蛮</p>
         <p class="meta">鶏もも肉・タルタルソース付き</p>
       </div>
+      <div class="chevron">›</div>
     </div>
-    <div class="day-card">
+    <div class="day-card" onclick="openRecipe('tue')">
       <div class="day-badge">火</div>
       <div class="day-info">
         <p class="dish">牛肉入りきんぴらごぼう</p>
         <p class="meta">牛こま肉・ご飯がすすむ味付け</p>
       </div>
+      <div class="chevron">›</div>
     </div>
-    <div class="day-card">
+    <div class="day-card" onclick="openRecipe('wed')">
       <div class="day-badge">水</div>
       <div class="day-info">
         <p class="dish">ピーマンの肉詰め</p>
         <p class="meta">合いびき肉・2人分</p>
       </div>
+      <div class="chevron">›</div>
     </div>
-    <div class="day-card">
+    <div class="day-card" onclick="openRecipe('thu')">
       <div class="day-badge">木</div>
       <div class="day-info">
         <p class="dish">鶏もも肉とナスの照り焼き</p>
         <p class="meta">鶏もも肉・揚げ焼き</p>
       </div>
+      <div class="chevron">›</div>
     </div>
-    <div class="day-card">
+    <div class="day-card" onclick="openRecipe('fri')">
       <div class="day-badge">金</div>
       <div class="day-info">
         <p class="dish">油揚げの肉詰め</p>
         <p class="meta">豚ひき肉・餃子だれで食べる</p>
       </div>
+      <div class="chevron">›</div>
     </div>
-    <div class="day-card">
+    <div class="day-card" onclick="openRecipe('sat')">
       <div class="day-badge weekend">土</div>
       <div class="day-info">
         <p class="dish">具沢山のふわっふわ焼き</p>
         <p class="meta">鶏挽肉・はんぺん入り</p>
       </div>
+      <div class="chevron">›</div>
     </div>
-    <div class="day-card">
+    <div class="day-card" onclick="openRecipe('sun')">
       <div class="day-badge weekend">日</div>
       <div class="day-info">
         <p class="dish">チキンライス（オムライス用）</p>
         <p class="meta">鶏もも肉・卵を添えてオムライス風に</p>
       </div>
+      <div class="chevron">›</div>
     </div>
 
     <p class="note">※ 7レシピ中4品が鶏肉ベースです。レシピが増えたらバランスを調整していきます。</p>
@@ -289,7 +377,222 @@
   </section>
 </main>
 
+<div class="modal-overlay" id="modalOverlay" onclick="if(event.target===this) closeRecipe()">
+  <div class="modal-content">
+    <div class="modal-header">
+      <h2 id="modalTitle"></h2>
+      <button class="modal-close" onclick="closeRecipe()">×</button>
+    </div>
+    <p class="modal-meta" id="modalMeta"></p>
+    <div class="modal-section-title">材料</div>
+    <div id="modalIngredients"></div>
+    <div class="modal-section-title">作り方</div>
+    <ol id="modalSteps"></ol>
+    <div class="modal-section-title">ポイント・メモ</div>
+    <ul id="modalTips" class="tip-list"></ul>
+  </div>
+</div>
+
 <script>
+  // レシピデータ
+  const recipes = {
+    mon: {
+      title: 'チキン南蛮',
+      info: '調理時間：約15分／人数：1〜2人分／難易度：★☆☆',
+      ingredients: [
+        { group: '鶏肉・タレ', items: ['鶏もも肉：1枚', '料理酒：大さじ2', '醤油：大さじ2', '砂糖：大さじ2', 'お酢：大さじ2'] },
+        { group: 'タルタルソース', items: ['卵：2個', 'マヨネーズ：大さじ2', '塩コショウ：少々'] }
+      ],
+      steps: [
+        '鍋に鶏もも肉の皮目を下にして○（タレ）を入れ、蓋をして中火で5分ほど煮る',
+        '肉を煮る間に卵を割り黄身に穴を開け、ラップをかけて600Wで1分30秒レンチン',
+        '卵をほぐしてマヨネーズと塩コショウを混ぜる',
+        '5分たったら肉を裏返して、弱めの中火で3分程煮る',
+        '蓋を開けて再度裏返し、火を強めてとろみがついたら火を止める'
+      ],
+      tips: [
+        'タルタルソースはレンチン卵で簡単に作れる時短アレンジ',
+        'とろみがつくまでしっかり煮詰めるのがポイント',
+        '黄身に穴を開けないとレンチン中に破裂するので注意'
+      ]
+    },
+    tue: {
+      title: '牛肉入りきんぴらごぼう',
+      info: '調理時間：不明／人数：不明／難易度：★☆☆',
+      ingredients: [
+        { group: null, items: ['ごぼう：1本', 'にんじん：1/2本', '牛こま肉：200g', '醤油：フライパン1周', '酒：フライパン1周', 'みりん：フライパン1周', '砂糖：大さじ1くらい', '一味唐辛子：少々', 'ごま油：仕上げに少々'] }
+      ],
+      steps: [
+        'ごぼう、にんじんを炒める',
+        '牛肉を加えて炒める',
+        '調味料（醤油・酒・みりん・砂糖・一味）を全て入れて汁気がなくなったらOK',
+        '仕上げにごま油をかけて完成'
+      ],
+      tips: [
+        '分量はアバウトでOK、味見しながら調整で十分',
+        '醤油・酒・みりんはフライパン1周が目安',
+        '牛肉を入れることでメインおかずになるボリューム感に',
+        'ご飯がすすむ一品'
+      ]
+    },
+    wed: {
+      title: 'ピーマンの肉詰め',
+      info: '調理時間：不明／人数：2人分／難易度：★☆☆',
+      ingredients: [
+        { group: 'メイン', items: ['ピーマン：4つ', '合挽き肉（豚ひき肉でも可）：200〜250g', '玉ねぎ：1/2個'] },
+        { group: 'ピーマンにまぶす用', items: ['片栗粉：大さじ1'] },
+        { group: '肉だね用 ●', items: ['片栗粉：大さじ1', '塩胡椒：少々'] },
+        { group: '蒸し焼き用', items: ['酒：大さじ1'] },
+        { group: 'タレ ◎', items: ['醤油：大さじ1', 'みりん：大さじ1', '砂糖：小さじ2'] }
+      ],
+      steps: [
+        'ピーマンのヘタと種を取って2〜3cm幅の輪切りにする',
+        'ポリ袋に輪切りにしたピーマンと片栗粉大さじ1を入れ、全体にまぶすようにシャカシャカ振る',
+        'ボールに合挽き肉（豚ひき肉でも可）とみじん切りにした玉ねぎ、●（片栗粉・塩胡椒）を入れてよく揉む',
+        '肉だねができたら、ピーマンに詰めていく',
+        '油をあたためたフライパンにピーマンの肉詰めを並べて焼く',
+        '片面焼けたら裏っ返し、酒を大さじ1入れて蓋をし、蒸し焼きにする',
+        '火が通った頃で◎の調味料を全て加え、中火で熱しながらピーマンと絡め、テリテリになったら完成'
+      ],
+      tips: [
+        'ピーマンに片栗粉をまぶしておくことで肉だねが剥がれにくくなる',
+        '肉だねに片栗粉を入れることでふっくら仕上がる',
+        '蒸し焼き後にタレを絡めてテリテリに仕上げるのがポイント'
+      ]
+    },
+    thu: {
+      title: '鶏もも肉とナスの照り焼き',
+      info: '調理時間：不明／人数：2人分／難易度：★☆☆',
+      ingredients: [
+        { group: null, items: ['鶏もも肉：350g', 'ナス：1本', 'カットネギ：お好みで'] },
+        { group: '下味 ●', items: ['酒：大さじ1', '醤油：大さじ1'] },
+        { group: '衣・油', items: ['片栗粉：大さじ3', '油：大さじ2'] },
+        { group: '照りダレ ◎', items: ['醤油：大さじ1', '酒：大さじ1', 'みりん：大さじ1', '砂糖：大さじ1'] }
+      ],
+      steps: [
+        'ナスは乱切り、もも肉は一口大に切り、ポリ袋に入れて●を揉み込み5分置く',
+        '①に片栗粉をまぶし、油をひいたフライパンで両面揚げ焼きする',
+        '鶏肉に火が通ったらナスを入れ炒め、弱火にして◎を入れ照りが出たら完成',
+        'お好みでカットネギを散らして召し上がれ'
+      ],
+      tips: [
+        '鶏肉を揚げ焼きした油は拭き取らず、そのままナスに吸わせる（旨みが染み込んで美味しくなる）',
+        '照りダレを入れてからは弱火でじっくり絡める',
+        '照り焼き風のこってり甘めの味付けでご飯がすすむ一品'
+      ]
+    },
+    fri: {
+      title: '油揚げの肉詰め',
+      info: '調理時間：不明／人数：4つ分／難易度：★☆☆',
+      ingredients: [
+        { group: '肉だね', items: ['油揚げ：2枚', '豚ひき肉：200g', 'ニラ：1/4束（ニオイが気になるなら小松菜でもOK）', 'おろし生姜：少々', '塩：少々', '胡椒：少々', 'ごま：大さじ1（食感のアクセントになるので必須！）'] },
+        { group: '蒸し焼き用', items: ['酒：大さじ1'] },
+        { group: '付けダレ', items: ['酢、醤油、カラシ、ポン酢など：適量（餃子の付けダレと同じ感覚で）'] }
+      ],
+      steps: [
+        '油揚げは2等分し、ニラは粗みじんに切り、生姜はおろす',
+        '○（肉だねの材料）をフライパンで白っぽくなるまでよくこねる',
+        '油揚げに2を詰めて1cm程度の厚さにする（おいなりさん型にすると火が通りにくいので注意）',
+        '蓋を閉めて弱めの中火で焼き、こんがりしたらひっくり返して酒を入れ、中まで火が通るように蒸し焼きにする',
+        '付けダレをつけて食べる'
+      ],
+      tips: [
+        'ごまは食感のアクセントになるので忘れずに',
+        'ニラが苦手なら小松菜で代替可',
+        'おいなりさん型（袋状）にすると火が通りにくいため、平らに詰めるのがポイント',
+        '付けダレは餃子用のものと同じでOK（酢＋醤油＋カラシ、またはポン酢など）'
+      ]
+    },
+    sat: {
+      title: '具沢山のふわっふわ焼き',
+      info: '調理時間：不明／人数：作りやすい分量（4個）／難易度：★☆☆',
+      ingredients: [
+        { group: null, items: ['鶏挽肉：250g', 'はんぺん：1枚（50g）', 'サラダスティック（カニ風味かまぼこ）：5本', '粉チーズ：大さじ1', 'ごま：大さじ1', 'ねぎ（青いところ）：1本分（10g）', '醤油：大さじ1/2', '油：大さじ1/2', 'お酒：大さじ1'] }
+      ],
+      steps: [
+        'ねぎは小口切り、サラダスティックはほぐして○（油・お酒以外の材料）をよく揉む',
+        '4等分して小判型にまとめる',
+        '油を回し入れて弱火で焼き、焼き目がついたらひっくり返してお酒を入れて蒸し焼きにする',
+        '中まで火が通ったら完成！'
+      ],
+      tips: [
+        'はんぺんを入れることでふわっとした食感になる',
+        '弱火でじっくり焼くのがポイント',
+        '蒸し焼きにすることで中までしっかり火が通る'
+      ]
+    },
+    sun: {
+      title: 'チキンライス（オムライス用）',
+      info: '調理時間：15分／人数：1人分／難易度：★★☆',
+      ingredients: [
+        { group: '具材', items: ['ごはん：200〜250g', '鶏もも肉：150g', 'ピーマン：1/2個', 'しいたけ：1個', '玉ねぎ：1/4個'] },
+        { group: '調味料', items: ['バター（有塩・無塩どちらでも）：15g', '料理酒：大さじ1', '塩コショウ：少々', '味の素：小さじ1', 'ケチャップ：大さじ2'] }
+      ],
+      steps: [
+        '具材をなるべく同じ大きさにカットする',
+        '温める前のフライパンにバターと玉ねぎを入れて弱火で炒める',
+        '玉ねぎがしんなりしてきたら鶏肉を入れる',
+        '鶏肉の赤みがなくなればしいたけ、ピーマンを入れて炒める',
+        'ごはんと料理酒を入れて米をほぐしながら具材とあえる',
+        '全体が軽くほぐれたら下味（塩コショウ・味の素）をつけてよく混ぜる',
+        'フライパン中央にすき間をつくりケチャップを入れ、軽く煮詰めて酸味を飛ばす',
+        'ごはんに綺麗に混ざったら味見をしてオイスターソースで仕上げる'
+      ],
+      tips: [
+        '強火禁止！弱火でじっくり炒める。強火だと周りが焦げて中まで火が通らない',
+        'ケチャップを入れてからは焦げやすいので特に注意（自信がない人は弱火で）',
+        '鶏肉の代わりにベーコンやウィンナーでもOK',
+        'マッシュルームやニンジンを加えてもおいしい'
+      ]
+    }
+  };
+
+  function openRecipe(id) {
+    const r = recipes[id];
+    document.getElementById('modalTitle').textContent = r.title;
+    document.getElementById('modalMeta').textContent = r.info;
+
+    const ingDiv = document.getElementById('modalIngredients');
+    ingDiv.innerHTML = '';
+    r.ingredients.forEach(group => {
+      if (group.group) {
+        const h = document.createElement('div');
+        h.className = 'ingredient-group';
+        h.textContent = group.group;
+        ingDiv.appendChild(h);
+      }
+      const ul = document.createElement('ul');
+      group.items.forEach(item => {
+        const li = document.createElement('li');
+        li.textContent = item;
+        ul.appendChild(li);
+      });
+      ingDiv.appendChild(ul);
+    });
+
+    const stepsOl = document.getElementById('modalSteps');
+    stepsOl.innerHTML = '';
+    r.steps.forEach(step => {
+      const li = document.createElement('li');
+      li.textContent = step;
+      stepsOl.appendChild(li);
+    });
+
+    const tipsUl = document.getElementById('modalTips');
+    tipsUl.innerHTML = '';
+    r.tips.forEach(tip => {
+      const li = document.createElement('li');
+      li.textContent = tip;
+      tipsUl.appendChild(li);
+    });
+
+    document.getElementById('modalOverlay').classList.add('show');
+  }
+
+  function closeRecipe() {
+    document.getElementById('modalOverlay').classList.remove('show');
+  }
+
   // タブ切り替え
   document.querySelectorAll('.tab').forEach(tab => {
     tab.addEventListener('click', () => {
